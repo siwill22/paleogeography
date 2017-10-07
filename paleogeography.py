@@ -5,8 +5,6 @@ import os
 import sys
 sys.path.append('/Users/Simon/GIT/gplates-web/django/GWS/utils/')
 from create_gpml import create_gpml_healpix_mesh,create_gpml_regular_long_lat_mesh
-sys.path.append('/Users/Simon/GIT/pygplates-citcom/utils/')
-from section_plotting import create_profile_points
 import xarray as xr
 import scipy.interpolate as spi
 
@@ -128,6 +126,32 @@ def create_slice(gridX,gridY,gridZ,GCPts,ProfilePoints):
     Zval = XVals.flatten()
     
     return Zval
+
+
+def create_profile_points(PtLons,PtLats):
+    
+    polyline_features = []
+    polyline = pygplates.PolylineOnSphere(zip(PtLats,PtLons))
+    polyline_feature = pygplates.Feature()
+    polyline_feature.set_geometry(polyline)
+    polyline_features.append(polyline_feature)
+    
+    # Define point spacing in arc-degrees
+    PointSpacing = 0.5
+    
+    for feature in polyline_features:
+        geometry = feature.get_geometry()
+        arc_distance = np.degrees(geometry.get_arc_length())
+        tesselated_polyline = geometry.to_tessellated(np.radians(PointSpacing))
+        GCPts = tesselated_polyline.to_lat_lon_array()
+        
+        # Actually this is wrong - since it will only give 'near to' 15 degrees, not exact
+        label_points = geometry.to_tessellated(np.radians(15)).to_lat_lon_array()
+        
+        arc_distance = np.degrees(geometry.get_arc_length())
+        ProfilePoints = np.linspace(-arc_distance/2,arc_distance/2,GCPts.shape[0])
+
+    return GCPts,ProfilePoints,arc_distance
 
 
 def plate_boundary_intersections(cross_section_geometry,shared_boundary_sections,ProfileX_kms):
