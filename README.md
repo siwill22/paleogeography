@@ -21,3 +21,6 @@ gmt v5.x (tested with v5.4.1)
 The examples are generally designed to run on the paleogeography polygons from Cao et al (in review),
 the files are available in the zip supplement linked to on this page:
 https://www.biogeosciences-discuss.net/bg-2017-94/
+
+HOWEVER: The tweening example assumes that the input paleoshorelines are in the 'plate frame of reference', which is different from the Cao++ files, or what the notebook here produces. This notebook runs on paleoshorelines like those available here:
+https://github.com/chhei/Heine_AJES_15_GlobalPaleoshorelines/blob/master
