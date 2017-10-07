@@ -384,10 +384,14 @@ def paleogeography_cross_section(ProfileX_kms,topo_profile,moho_profile,
     plt.fill_between(ProfileX_kms,-7000,-1e7,color='magenta')
 
     for point in subduction_intersections:
-        plt.arrow(point[1],5000, 0.0, -5000, fc="b", ec="b",head_width=100, head_length=1000, linewidth=5,zorder=2)
+        plt.arrow(point[1],5000, 0.0, -4000, fc="b", ec="b",head_width=40, head_length=1000, linewidth=5,zorder=2)
+        if point[2]:
+            plt.plot([point[1]+25,point[1]-250],[-8000,-50000],linewidth=12,color='pink',zorder=1)
+        else:
+            plt.plot([point[1]-25,point[1]+250],[-8000,-50000],linewidth=12,color='pink',zorder=1)
     for point in ridge_intersections:
-        plt.arrow(point[1],5000, 0.0, -5000, fc="r", ec="r",head_width=100, head_length=1000, linewidth=5,zorder=2)
+        plt.arrow(point[1],5000, 0.0, -4000, fc="r", ec="r",head_width=40, head_length=1000, linewidth=5,zorder=2)
     plt.gca().axis('tight')
     plt.gca().set_aspect(vertical_exaggeration/1000.)  # 1000 because intended units are km for distance, but meters for depth
-    plt.ylim(-45000,5000)
+    plt.ylim(-65000,5000)
 
