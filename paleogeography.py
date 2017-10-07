@@ -43,7 +43,7 @@ def rasterise_paleogeography(pg_dir,rotation_model,time,sampling=0.5,env_list=No
     # takes paleogeography polygons like those from Cao++ 2017 and converts them
     # into a raster
 
-    pg_features = load_paleogeagraphy(pg_dir,env_list)
+    pg_features = load_paleogeography(pg_dir,env_list)
             
     raster_domain = create_gpml_regular_long_lat_mesh(sampling,filename=None,feature_type='MeshNode')
 
