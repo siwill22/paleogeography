@@ -15,8 +15,8 @@ Most of the low level code is contained in the .py files. These functions must b
 into the notebooks. 
 
 dependencies:
-pygplates, numpy, matplotlib, basemap, xarray, scikit-image
-gmt v5.x (tested with v5.4.1)
+- pygplates, numpy, matplotlib, basemap, xarray, scikit-image
+- gmt v5.x (tested with v5.4.1)
 
 The examples are generally designed to run on the paleogeography polygons from Cao et al (in review),
 the files are available in the zip supplement linked to on this page:
