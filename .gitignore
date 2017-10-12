@@ -6,3 +6,7 @@ test_filt.nc
 test.asc
 
 test.nc
+
+.ipynb_checkpoints/extract-paleoshorelines-checkpoint.ipynb
+
+.ipynb_checkpoints/paleotopo-cross-section-from-function-calls-checkpoint.ipynb
