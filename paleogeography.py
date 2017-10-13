@@ -3,8 +3,6 @@ import glob
 import numpy as np
 import os
 import sys
-sys.path.append('/Users/Simon/GIT/gplates-web/django/GWS/utils/')
-from create_gpml import create_gpml_healpix_mesh,create_gpml_regular_long_lat_mesh
 import xarray as xr
 import scipy.interpolate as spi
 
@@ -15,7 +13,7 @@ except:
     print 'Failed to load plotting dependencies'
 
 
-def load_paleogeography(pg_dir,env_list):
+def load_paleogeography(pg_dir,env_list=None):
 
     # default environment_list is the format used for Cao++ 2017
     if env_list is None:
@@ -37,14 +35,13 @@ def load_paleogeography(pg_dir,env_list):
     return pg_features
 
 
-def rasterise_paleogeography(pg_dir,rotation_model,time,sampling=0.5,env_list=None):
+def rasterise_paleogeography(pg_features,rotation_model,time,sampling=0.5,env_list=None):
     # takes paleogeography polygons like those from Cao++ 2017 and converts them
     # into a raster
 
-    pg_features = load_paleogeography(pg_dir,env_list)
+    #pg_features = load_paleogeography(pg_dir,env_list)
             
     raster_domain = create_gpml_regular_long_lat_mesh(sampling,filename=None,feature_type='MeshNode')
-
 
     plate_partitioner = pygplates.PlatePartitioner(pg_features, rotation_model, reconstruction_time=time)
 
