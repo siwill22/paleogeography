@@ -1,5 +1,7 @@
 import pygplates
 import points_in_polygons
+import points_spatial_tree
+from proximity_query import *
 from create_gpml import create_gpml_regular_long_lat_mesh
 import numpy as np
 from skimage import measure
@@ -104,3 +106,43 @@ def run_grid_pip(time,points,polygons,rotation_model,grid_dims):
     return bi
 
 
+# Function to run efficient point in/near polygons
+# returns two numbers - one is distance to polygon edge,
+# other is distance to polygon where distance is zero if inside
+def run_grid_pnp(recon_time, 
+                 points, 
+                 spatial_tree_of_uniform_recon_points, 
+                 polygons, 
+                 rotation_model, 
+                 distance_threshold_radians=2):
+
+    reconstructed_polygons = []
+    pygplates.reconstruct(polygons, rotation_model, reconstructed_polygons, recon_time)
+    rpolygons = []
+    for polygon in reconstructed_polygons:
+        if polygon.get_reconstructed_geometry():
+            rpolygons.append(polygon.get_reconstructed_geometry())
+                
+    res1 = find_closest_geometries_to_points_using_points_spatial_tree(points,
+                                                                    spatial_tree_of_uniform_recon_points,
+                                                                    rpolygons,
+                                                                    distance_threshold_radians = distance_threshold_radians,
+                                                                    geometries_are_solid = False)
+
+    distance_to_polygon_boundary = np.array(zip(*res1)[0])
+
+    # Make a copy of list of distances.
+    distance_to_polygon = list(distance_to_polygon_boundary)
+
+    # Set distance to zero for any points inside a polygon (leave other points unchanged).
+    res2 = points_in_polygons.find_polygons_using_points_spatial_tree(points,
+                                                                     spatial_tree_of_uniform_recon_points,
+                                                                     rpolygons)
+    for point_index, rpolygon in enumerate(res2):
+        # If not inside any polygons then result will be None.
+        if rpolygon:
+            distance_to_polygon[point_index] = 0.0
+
+    distance_to_polygon = np.array(distance_to_polygon)
+
+    return distance_to_polygon,distance_to_polygon_boundary
