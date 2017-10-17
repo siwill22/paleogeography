@@ -67,6 +67,23 @@ def merge_polygons(polygons,rotation_model,
         return contour_features
 
 
+def force_polygon_geometries(input_features):
+# given any pygplates feature collection, creates an output feature collection
+# where all geometries are polygons based on the input geometries
+# intended for use in forcing features that are strictly polylines to close
+
+    polygons = []
+    for feature in input_features:    
+        for geom in feature.get_geometries():
+            polygon = []    
+            polygon = feature
+            polygon.set_geometry(pygplates.PolygonOnSphere(geom))
+            polygons.append(polygon)
+    polygon_features = pygplates.FeatureCollection(polygons)
+
+    return polygon_features
+
+
 def polygon_area_threshold(polygons,area_threshold):
     
     polygons_larger_than_threshold = []
