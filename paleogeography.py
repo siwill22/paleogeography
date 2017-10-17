@@ -36,13 +36,16 @@ def load_paleogeography(pg_dir,env_list=None):
     return pg_features
 
 
-def rasterise_paleogeography(pg_features,rotation_model,time,sampling=0.5,env_list=None):
+def rasterise_paleogeography(pg_features,rotation_model,time,sampling=0.5,env_list=None,meshtype='LongLatGrid'):
     # takes paleogeography polygons like those from Cao++ 2017 and converts them
     # into a raster
+    # if meshtype is set to 'healpix', sampling should be set to an integer defining nSide
 
     #pg_features = load_paleogeography(pg_dir,env_list)
-            
-    raster_domain = create_gpml_regular_long_lat_mesh(sampling,filename=None,feature_type='MeshNode')
+    if meshtype=='healpix':
+        raster_domain = create_gpml_healpix_mesh(sampling,filename=None,feature_type='MeshNode')
+    else:
+        raster_domain = create_gpml_regular_long_lat_mesh(sampling,filename=None,feature_type='MeshNode')
 
     plate_partitioner = pygplates.PlatePartitioner(pg_features, rotation_model, reconstruction_time=time)
 
