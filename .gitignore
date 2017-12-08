@@ -20,3 +20,5 @@ test.nc
 tmp/*
 
 .ipynb_checkpoints/paleogeography-to-raster-checkpoint.ipynb
+
+.ipynb_checkpoints/make-masks-checkpoint.ipynb
