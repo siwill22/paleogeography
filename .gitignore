@@ -24,3 +24,7 @@ tmp/*
 .ipynb_checkpoints/make-masks-checkpoint.ipynb
 
 Paleoshoreline_255.gpmlz
+
+.ipynb_checkpoints/tween-paleoshorelines-inplace-checkpoint.ipynb
+
+.ipynb_checkpoints/paleogeography-to-raster-reconstruct-checkpoint.ipynb

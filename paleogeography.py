@@ -355,7 +355,7 @@ def paleobathymetry_from_topologies(resolved_topologies,shared_boundary_sections
 
 ########################
 # PLOTTING
-def paleogeography_points_basemap(pg_points,env_color_dict,fill_color='darkblue',markersize=2):
+def paleogeography_points_basemap(pg_points,env_color_dict,fill_color='darkblue',markersize=2,alpha=1):
     m = Basemap(projection='robin', lon_0=0, resolution='c')
     m.drawmapboundary(fill_color='white')
     for feature in pg_points:
@@ -363,7 +363,7 @@ def paleogeography_points_basemap(pg_points,env_color_dict,fill_color='darkblue'
         if env is not None:
             color=env_color_dict[env]
         else:
-            color='darkblue'
+            color=fill_color
 
         for geometry in feature.get_geometries():
             x,y = m(geometry.to_lat_lon_array()[:,1],geometry.to_lat_lon_array()[:,0])
