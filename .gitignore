@@ -28,3 +28,9 @@ Paleoshoreline_255.gpmlz
 .ipynb_checkpoints/tween-paleoshorelines-inplace-checkpoint.ipynb
 
 .ipynb_checkpoints/paleogeography-to-raster-reconstruct-checkpoint.ipynb
+
+pg_points_tmp.gpmlz
+
+tween_feature_collections/*
+
+.ipynb_checkpoints/tweened-paleotopography-checkpoint.ipynb
