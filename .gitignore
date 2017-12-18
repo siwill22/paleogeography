@@ -34,3 +34,21 @@ pg_points_tmp.gpmlz
 tween_feature_collections/*
 
 .ipynb_checkpoints/tweened-paleotopography-checkpoint.ipynb
+
+paleotopo.nc
+
+land_marine.xyz
+
+land_marine.nc
+
+mountain.nc
+
+mountain.xyz
+
+paleotopobathy_smooth.nc
+
+paleotopobathy.nc
+
+tmp_psl.gpmlz
+
+.ipynb_checkpoints/tweened-paleotopography-clean-checkpoint.ipynb
