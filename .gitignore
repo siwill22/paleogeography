@@ -52,3 +52,9 @@ paleotopobathy.nc
 tmp_psl.gpmlz
 
 .ipynb_checkpoints/tweened-paleotopography-clean-checkpoint.ipynb
+
+paleotopo_grids/*
+
+paleotopobathy_smooth_126.00Ma.nc
+
+paleotopobathy_smooth_7.00Ma.nc
