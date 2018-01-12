@@ -62,3 +62,7 @@ paleotopobathy_smooth_7.00Ma.nc
 *.pyc
 
 test.gpml
+
+.ipynb_checkpoints/quadtree_debug-checkpoint.ipynb
+
+.ipynb_checkpoints/tweened-paleotopography-dev-checkpoint.ipynb
