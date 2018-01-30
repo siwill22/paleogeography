@@ -4,11 +4,15 @@ code for processing gplates-format paleogeographies
 
 ## Contents
 The notebooks contain examples of:
+- Deriving paleotopography grids from paleogeography polygons
+
 - extracting paleoshorelines from a set of polygons that describe environments either above (land, 
 mountain) or below (shallow marine, deep marine) sea-level
 
 - interpolating paleoshorelines at different times by 'tweening' between the polygon geometries at two 
-times bracketing a time range
+times bracketing a time range. There are two variants of this, one based on the Heine++ paleoshorelines 
+(where the source data is in the plate frame of reference), and another based on Cao++ paleogeography 
+polygons (where the source data are in reconstructed coordinates, so the process is more complex).
 
 - make a cross-section visualisation through a paleogeography/tectonic reconstruction, showing the locations
 of land masses, oceans, plate boundaries that the cross-section lines transects
