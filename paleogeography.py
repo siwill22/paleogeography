@@ -36,7 +36,9 @@ def load_paleogeography(pg_dir,env_list=None):
     return pg_features
 
 
-def rasterise_paleogeography(pg_features,rotation_model,time,sampling=0.5,env_list=None,meshtype='LongLatGrid'):
+def rasterise_paleogeography(pg_features,rotation_model,time,
+							 sampling=0.5,env_list=None,meshtype='LongLatGrid',
+							 masking=None):
     # takes paleogeography polygons like those from Cao++ 2017 and converts them
     # into a raster
     # if meshtype is set to 'healpix', sampling should be set to an integer defining nSide
@@ -49,8 +51,18 @@ def rasterise_paleogeography(pg_features,rotation_model,time,sampling=0.5,env_li
 
     plate_partitioner = pygplates.PlatePartitioner(pg_features, rotation_model, reconstruction_time=time)
 
-    pg_points = plate_partitioner.partition_features(raster_domain,
-                                                     properties_to_copy=[pygplates.PropertyName.gpml_shapefile_attributes])
+    if masking is not None:
+        pg_points = plate_partitioner.partition_features(raster_domain,
+														 partition_return = pygplates.PartitionReturn.separate_partitioned_and_unpartitioned,
+                                                         properties_to_copy=[pygplates.PropertyName.gpml_shapefile_attributes])
+        if masking == 'Outside':
+            pg_points = pg_points[0]
+        elif masking == 'Inside':
+            pg_points = pg_points[1]
+
+    else:
+        pg_points = plate_partitioner.partition_features(raster_domain,
+                                                         properties_to_copy=[pygplates.PropertyName.gpml_shapefile_attributes])
 
     return pg_points
 
