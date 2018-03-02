@@ -120,9 +120,20 @@ def load_netcdf(grdfile):
 
     data_array = ds_disk['z']
     coord_keys = data_array.coords.keys()
-    gridX = data_array.coords[coord_keys[0]].data
-    gridY = data_array.coords[coord_keys[1]].data
-    gridZ = data_array.data
+    try:
+        gridX = data_array.coords[coord_keys[0]].data
+        gridY = data_array.coords[coord_keys[1]].data
+        gridZ = data_array.data
+    except:
+        # attempt to handle old-school GMT netcdfs (e.g. produced by grdconvert)
+        gridX = np.linspace(ds_disk.data_vars['x_range'].data[0],
+                            ds_disk.data_vars['x_range'].data[1],
+                            ds_disk.data_vars['dimension'].data[0])
+        gridY = np.linspace(ds_disk.data_vars['y_range'].data[0],
+                            ds_disk.data_vars['y_range'].data[1],
+                            ds_disk.data_vars['dimension'].data[1])
+        gridZ = np.flipud(ds_disk.data_vars['z'].data.reshape(ds_disk.data_vars['dimension'].data[1],
+                                                              ds_disk.data_vars['dimension'].data[0]))
 
     ds_disk.close()
 
