@@ -71,11 +71,10 @@ def force_polygon_geometries(input_features):
 
     polygons = []
     for feature in input_features:    
-        for geom in feature.get_geometries():
-            polygon = []    
-            polygon = feature
-            polygon.set_geometry(pygplates.PolygonOnSphere(geom))
-            polygons.append(polygon)
+        #for geom in feature.get_geometries():
+        polygon = feature
+        polygon.set_geometry([pygplates.PolygonOnSphere(geom) for geom in feature.get_geometries()])
+        polygons.append(polygon)
     polygon_features = pygplates.FeatureCollection(polygons)
 
     return polygon_features
