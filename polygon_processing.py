@@ -70,11 +70,16 @@ def force_polygon_geometries(input_features):
 # intended for use in forcing features that are strictly polylines to close
 
     polygons = []
-    for feature in input_features:    
-        #for geom in feature.get_geometries():
-        polygon = feature
-        polygon.set_geometry([pygplates.PolygonOnSphere(geom) for geom in feature.get_geometries()])
-        polygons.append(polygon)
+    for feature in input_features: 
+        for geom in feature.get_all_geometries():
+            polygon = pygplates.Feature()
+            polygon.set_geometry(pygplates.PolygonOnSphere(geom))
+            polygon.set_reconstruction_plate_id(feature.get_reconstruction_plate_id())
+            # some features in COBTerranes had invalid time ranges - these with throw an error if 
+            # we try to create a new feature with same times
+            if feature.get_valid_time()[0]>=feature.get_valid_time()[1]:
+                polygon.set_valid_time(feature.get_valid_time()[0],feature.get_valid_time()[1])
+                polygons.append(polygon)
     polygon_features = pygplates.FeatureCollection(polygons)
 
     return polygon_features
@@ -84,8 +89,9 @@ def polygon_area_threshold(polygons,area_threshold):
     
     polygons_larger_than_threshold = []
     for polygon in polygons:
-        if polygon.get_geometry().get_area()>area_threshold:
-            polygons_larger_than_threshold.append(polygon)
+        if polygon.get_geometry() is not None:
+            if polygon.get_geometry().get_area()>area_threshold:
+                polygons_larger_than_threshold.append(polygon)
 
     return polygons_larger_than_threshold
 

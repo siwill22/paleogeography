@@ -14,24 +14,35 @@ except:
     print 'Failed to load plotting dependencies'
 
 
-def load_paleogeography(pg_dir,env_list=None):
+def load_paleogeography(pg_dir,env_list=None,
+						single_file=False,env_field='ENV'):
 
     # default environment_list is the format used for Cao++ 2017
     if env_list is None:
         env_list = ['lm','m','sm','i']
     
-    pg_features = []
-    for env in env_list:
-        try:
-            filename = glob.glob('%s/%s_*.shp' % (pg_dir,env))
-            print filename
-            features = pygplates.FeatureCollection(filename[0])
-            for feature in features:
-                feature.set_shapefile_attribute('Layer',env)
+    if single_file:
+        print pg_dir
+        features = pygplates.FeatureCollection(pg_dir)
+        pg_features = []
+        for feature in features:
+            if feature.get_shapefile_attribute(env_field) in env_list:
+                feature.set_shapefile_attribute('Layer',feature.get_shapefile_attribute(env_field))
                 pg_features.append(feature)
+
+    else:
+        pg_features = []
+        for env in env_list:
+            try:
+                filename = glob.glob('%s/%s_*.shp' % (pg_dir,env))
+                print filename
+                features = pygplates.FeatureCollection(filename[0])
+                for feature in features:
+                    feature.set_shapefile_attribute('Layer',env)
+                    pg_features.append(feature)
     
-        except:
-            print 'no features of type %s' % env
+            except:
+                print 'no features of type %s' % env
 
     return pg_features
 
