@@ -15,7 +15,7 @@ except:
 
 
 def load_paleogeography(pg_dir,env_list=None,
-						single_file=False,env_field='ENV'):
+                        single_file=False,env_field='ENV'):
 
     # default environment_list is the format used for Cao++ 2017
     if env_list is None:
@@ -125,15 +125,21 @@ def smooth_topography_grid(grdfile,filt_grdfile,wavelength):
     os.system('gmt grdfilter %s -G%s -Fg%0.2f -D4 -Vl' % (grdfile,filt_grdfile,wavelength))
 
 
-def load_netcdf(grdfile):
+def load_netcdf(grdfile,z_field_name='z'):
     
     ds_disk = xr.open_dataset(grdfile)
 
-    data_array = ds_disk['z']
+    data_array = ds_disk[z_field_name]
     coord_keys = data_array.coords.keys()
+
+    if 'lat' in coord_keys[0].lower():
+        latitude_key=0; longitude_key=1
+    else:
+        latitude_key=1; longitude_key=0
+
     try:
-        gridX = data_array.coords[coord_keys[0]].data
-        gridY = data_array.coords[coord_keys[1]].data
+        gridX = data_array.coords[coord_keys[longitude_key]].data
+        gridY = data_array.coords[coord_keys[latitude_key]].data
         gridZ = data_array.data
     except:
         # attempt to handle old-school GMT netcdfs (e.g. produced by grdconvert)
@@ -143,8 +149,8 @@ def load_netcdf(grdfile):
         gridY = np.linspace(ds_disk.data_vars['y_range'].data[0],
                             ds_disk.data_vars['y_range'].data[1],
                             ds_disk.data_vars['dimension'].data[1])
-        gridZ = np.flipud(ds_disk.data_vars['z'].data.reshape(ds_disk.data_vars['dimension'].data[1],
-                                                              ds_disk.data_vars['dimension'].data[0]))
+        gridZ = np.flipud(ds_disk.data_vars[z_field_name].data.reshape(ds_disk.data_vars['dimension'].data[1],
+                                                                       ds_disk.data_vars['dimension'].data[0]))
 
     ds_disk.close()
 
