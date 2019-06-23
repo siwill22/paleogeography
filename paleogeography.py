@@ -359,8 +359,9 @@ def age2depth(age_array,model='GDH1'):
 
     elif model is 'Crosby':
         paleodepth = 2652. + (324. * np.sqrt(age_array))
-        paleodepth[age_array>75.] = 5028. + 5.26*age_array - 250.*np.sin((age_array-75.)/30.)
-        paleodepth[age_Array>160.] = 5750.
+        paleodepth[age_array>75.] = 5028. + 5.26*age_array[age_array>75.] - 250.*np.sin((age_array[age_array>75.]-75.)/30.)
+        paleodepth[age_array>160.] = 5750.
+        paleodepth = -paleodepth
 
     else:
         print 'unknown depth model'
