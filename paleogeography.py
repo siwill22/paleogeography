@@ -158,7 +158,7 @@ def load_netcdf(grdfile,z_field_name='z'):
 
 
 def create_slice(gridX,gridY,gridZ,GCPts,ProfilePoints):
-    # male a cross-section across a grid, given (two or more) points
+    # make a cross-section across a grid, given (two or more) points
     # defined in lat/long. Profiles are defined as great-circle paths between
     # defined points
 
@@ -266,10 +266,10 @@ def get_subduction_polarity(shared_subsegment,topology_index,cross_section_segme
     subduction_polarity = shared_subsegment.get_feature().get_enumeration(pygplates.PropertyName.gpml_subduction_polarity)
     if ((subduction_polarity == 'Left' and cross_section_left_to_right) or
         (subduction_polarity == 'Right' and not cross_section_left_to_right)):
-        cross_section_dips_left_to_right = False
+        cross_section_dips_left_to_right = True
     else:
         # NOTE: We'll also get here if (subduction_polarity == 'Unknown').
-        cross_section_dips_left_to_right = True
+        cross_section_dips_left_to_right = False
 
     return cross_section_dips_left_to_right
 
