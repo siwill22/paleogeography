@@ -195,6 +195,18 @@ def create_profile_points(PtLons,PtLats):
     return GCPts,ProfilePoints,arc_distance
 
 
+def profile_plate_ids(resolved_topologies,rotation_model,GreatCirclePoints):
+
+    partitioner = pygplates.PlatePartitioner(resolved_topologies,rotation_model)
+
+    plate_ids = []
+    for point in GreatCirclePoints:
+        partitioned_point = partitioner.partition_point(pygplates.PointOnSphere(point))
+        plate_ids.append(partitioned_point.get_feature().get_reconstruction_plate_id())
+
+    return plate_ids
+
+
 def plate_boundary_intersections(cross_section_geometry,shared_boundary_sections,ProfileX_kms):
 
     # Given a polyline, and the subduction boundary sections, finds places where the cross-section
