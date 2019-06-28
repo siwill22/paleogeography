@@ -169,7 +169,7 @@ def create_slice(gridX,gridY,gridZ,GCPts,ProfilePoints):
     return Zval
 
 
-def create_profile_points(PtLons,PtLats):
+def create_profile_points(PtLons,PtLats,PointSpacing = 0.5):
 
     polyline_features = []
     polyline = pygplates.PolylineOnSphere(zip(PtLats,PtLons))
